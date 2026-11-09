@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2efe5">
+  <title>Smash Multiverse</title>
+  <style>
+    :root{--paper:#f2efe5;--ink:#172321;--muted:#64716b;--line:#c9c9b9;--green:#b7df73;--coral:#ff765e;--blue:#66c5dc;--mono:"Courier New",monospace;--display:"Trebuchet MS",sans-serif}
+    *{box-sizing:border-box}body{margin:0;min-width:320px;background-color:var(--paper);background-image:linear-gradient(rgba(23,35,33,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(23,35,33,.035) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font-family:var(--display)}button{color:inherit;font:inherit}.shell{max-width:1180px;margin:0 auto;padding:22px 28px 30px}.masthead{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:2px solid var(--ink);padding-bottom:15px}.brand{display:flex;align-items:center;gap:11px;font-weight:900}.brand-mark{display:grid;width:30px;height:30px;place-items:center;background:var(--ink);color:var(--green);font:900 17px var(--mono)}.brand-name{font-size:14px;text-transform:uppercase}.brand-name span{color:#64716b}.live-label{display:flex;align-items:center;gap:8px;color:var(--muted);font:700 10px var(--mono);text-transform:uppercase}.live-dot{width:8px;height:8px;background:#6ea44e;box-shadow:0 0 0 3px #dce8c9}.intro{display:flex;justify-content:space-between;align-items:end;gap:16px;padding:24px 0 18px}.eyebrow{margin:0 0 5px;color:#65756a;font:700 10px var(--mono);text-transform:uppercase}h1{margin:0;font-size:clamp(26px,5vw,42px);line-height:1;text-transform:uppercase}.edition{padding:6px 9px;border:1px solid var(--ink);background:var(--green);font:700 10px var(--mono);white-space:nowrap}.stage-bar{display:flex;align-items:center;gap:7px;padding:10px 0 12px;border-top:1px solid var(--line)}.stage-label{margin-right:auto;color:var(--muted);font:700 10px var(--mono);text-transform:uppercase}.stage-button{display:flex;align-items:center;gap:8px;min-height:34px;padding:0 10px;border:1px solid var(--line);background:#faf9f2;cursor:pointer;font:700 10px var(--mono);text-transform:uppercase;transition:background .15s,border-color .15s,transform .15s}.stage-button:hover{transform:translateY(-2px);border-color:var(--ink)}.stage-button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--paper)}.stage-chip{width:12px;height:12px;border:1px solid rgba(23,35,33,.35)}.stage-button:nth-of-type(2) .stage-chip{background:#f1b84a}.stage-button:nth-of-type(3) .stage-chip{background:#42b6ae}.stage-button:nth-of-type(4) .stage-chip{background:#f07665}.game-frame{position:relative;overflow:hidden;border:2px solid var(--ink);background:#d7ecdf;box-shadow:6px 6px 0 var(--ink)}canvas{display:block;width:100%;aspect-ratio:16/9;image-rendering:pixelated;image-rendering:crisp-edges}.frame-corner{position:absolute;z-index:1;top:10px;left:12px;padding:5px 7px;background:var(--paper);border:1px solid var(--ink);font:700 9px var(--mono);text-transform:uppercase}.frame-corner.right{right:12px;left:auto}.game-controls{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 0 13px;border-bottom:1px solid var(--line)}.players{display:flex;flex-wrap:wrap;gap:24px}.player-key{display:flex;align-items:center;gap:9px;color:var(--muted);font:700 10px var(--mono);text-transform:uppercase}.player-key strong{color:var(--ink)}.key-set{display:inline-flex;gap:3px}kbd{min-width:19px;padding:4px 5px;border:1px solid #aeb3a4;border-bottom-width:2px;background:#fbfaf4;color:var(--ink);font:700 9px var(--mono);text-align:center}.action button{min-height:32px;padding:0 12px;border:1px solid var(--ink);background:var(--green);cursor:pointer;font:700 10px var(--mono);text-transform:uppercase}.action button:hover{background:var(--ink);color:var(--paper)}.footnote{display:flex;justify-content:space-between;gap:16px;padding-top:11px;color:var(--muted);font:10px var(--mono)}
+    @media(max-width:700px){.shell{padding:15px 14px 22px}.masthead{padding-bottom:12px}.stage-bar{flex-wrap:wrap}.stage-label{flex-basis:100%}.stage-button{flex:1;justify-content:center;gap:5px;padding:0 6px;font-size:9px}.game-controls{align-items:flex-start}.players{display:grid;gap:10px}.player-key{font-size:9px}.footnote{font-size:9px}}
+    @media(max-width:420px){.edition{font-size:9px}.stage-button{flex-direction:column;min-height:44px}.frame-corner{top:6px;left:6px;font-size:8px}.frame-corner.right{right:6px}}
+  </style>
+  <style>
+    .character-select{padding:18px 0 20px;border-top:1px solid var(--line)}
+    .character-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .character-heading h2{margin:0;font-size:19px;text-transform:uppercase}
+    .character-heading p{margin:0;color:var(--muted);font:700 10px var(--mono);text-transform:uppercase}
+    .roster{display:flex;align-items:stretch;gap:12px}
+    .character-card{display:flex;align-items:center;gap:13px;width:min(100%,360px);min-height:88px;padding:12px;border:2px solid var(--ink);background:#fbfaf4;text-align:left;cursor:pointer}
+    .character-card[aria-pressed=true]{background:var(--green);box-shadow:4px 4px 0 var(--ink)}
+    .fighter-portrait{display:block;flex:0 0 32px;width:32px;height:60px;background:transparent;image-rendering:pixelated}
+    .fighter-info{display:grid;gap:5px}.fighter-info strong{font:900 15px var(--display);text-transform:uppercase}.fighter-info span{color:var(--muted);font:700 9px var(--mono);text-transform:uppercase}
+    .roster .action{margin-left:auto;align-self:center}.action #start-match{background:var(--ink);color:var(--paper)}.action #start-match:disabled{border-color:var(--line);background:#e5e3d8;color:#8a8e83;cursor:not-allowed}
+    @media(max-width:520px){.roster{align-items:stretch;flex-direction:column}.roster .action{margin-left:0;align-self:stretch}.roster .action button{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead"><div class="brand"><div class="brand-mark">M</div><div class="brand-name">Smash <span>Multiverse</span></div></div><div class="live-label"><span class="live-dot"></span> Local arcade / 02 players</div></header>
+    <section class="intro"><div><p class="eyebrow">Choose your battleground</p><h1 id="page-title">Stage select</h1></div><div class="edition">PIXEL BUILD 01</div></section>
+    <nav class="stage-bar" id="stage-bar" aria-label="Choose an arena"><span class="stage-label">01 / Arenas</span><button class="stage-button" data-stage="metro" aria-pressed="true"><span class="stage-chip"></span>Clover Park</button><button class="stage-button" data-stage="shrine" aria-pressed="false"><span class="stage-chip"></span>Ember Docks</button><button class="stage-button" data-stage="clouds" aria-pressed="false"><span class="stage-chip"></span>Cloud Deck</button></nav>
+    <section class="character-select" id="character-select" aria-label="Choose your character" hidden>
+      <div class="character-heading"><h2>Choose your fighter</h2><p>02 / Player one</p></div>
+      <div class="roster">
+        <button class="character-card" id="guy-card" type="button" aria-pressed="false"><canvas class="fighter-portrait" id="character-portrait" width="32" height="60" aria-hidden="true"></canvas><span class="fighter-info"><strong>Just Some Guy?</strong><span>Available fighter</span></span></button>
+        <div class="action"><button id="start-match" type="button" disabled>Start match</button></div>
+      </div>
+    </section>
+    <section class="game-frame" id="game-frame" aria-label="Pixel platform fighter game" hidden><span class="frame-corner" id="stage-readout">CLOVER PARK</span><span class="frame-corner right">LOCAL VERSUS</span><canvas id="game" width="480" height="270" aria-label="Two-player pixel-art fighting game"></canvas></section>
+    <section class="game-controls" id="game-controls" aria-label="Game controls" hidden><div class="players"><div class="player-key"><strong>P1 / Just Some Guy?</strong><span class="key-set"><kbd>A</kbd><kbd>D</kbd><kbd>W</kbd><kbd>S</kbd></span><span>Move / jump / drop</span><kbd>E</kbd><span>Direction + attack</span><kbd>W + D</kbd><span>Drive car</span><kbd>W + A</kbd><span>Charge punch</span><kbd>W + S</kbd><span>Lawnmower (up to 3s)</span></div><div class="player-key"><strong>P2 / Mistral</strong><span class="key-set"><kbd>&larr;</kbd><kbd>&rarr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd></span><span>Move / jump / drop</span><kbd>SPACE</kbd><span>Attack</span><kbd>&rarr; + SPACE</kbd><span>Flying charge</span><kbd>&larr; + SPACE</kbd><span>Sky kick</span><kbd>&uarr; + SPACE</kbd><span>Upward ki blast</span><kbd>&darr; + SPACE</kbd><span>Sweep</span><kbd>&uarr; + &darr;</kbd><span>Golden Gale</span><kbd>&rarr; + &uarr; + SPACE</kbd><span>Azure Arc beam</span></div></div><div class="action"><button id="reset" class="reset" type="button">Reset match</button></div></section>
+    <footer class="footnote"><span>Side-view camera / 2.5D arenas</span><span>Move. Jump. Launch.</span></footer>
+  </main>
+  <script>
+    (()=>{
+      const canvas=document.querySelector('#game'),ctx=canvas.getContext('2d'),readout=document.querySelector('#stage-readout'),keys=new Set();
+      const stageBar=document.querySelector('#stage-bar'),characterSelect=document.querySelector('#character-select'),gameFrame=document.querySelector('#game-frame'),gameControls=document.querySelector('#game-controls'),startMatch=document.querySelector('#start-match');
+      const stages={
+        metro:{name:'CLOVER PARK',sky:'#b7dfd1',far:'#8db7a5',near:'#547d71',ground:'#344943',trim:'#f1b84a',accent:'#fc7663',platforms:[[66,151,82],[177,119,84],[292,147,78],[384,103,64]]},
+        shrine:{name:'EMBER DOCKS',sky:'#f0b879',far:'#d88c68',near:'#97615e',ground:'#484c45',trim:'#48c2ad',accent:'#f3d37b',platforms:[[58,132,70],[151,158,80],[250,116,76],[350,145,78],[431,108,48]]},
+        clouds:{name:'CLOUD DECK',sky:'#8bd0d5',far:'#b5d8ab',near:'#719c83',ground:'#394a50',trim:'#ff795e',accent:'#f4d45d',platforms:[[56,157,92],[167,128,78],[267,99,68],[354,137,72],[438,112,42]]}
+      };
+      const guySprite=[
+        '....PPPPPP....','...PPPPPPPP...','..PPPPPPPPPP..','..PPPPPPPPPPP.','...PPPRPPPP...','....PPPRPPP....',
+        '.....PMM.....','.....SSSS.....','....SSSSSS....','....SSESSS....','....SSSSSS....','.....SSSS.....','......MM......',
+        '.....MMMM.....','....MMMMMM....','...MMRRRRMM...','...MRRRRRRM...','..MMRRRRRRMM..','..MMRRMRRRRMM..','..MMRRRRRRMM..','...MMRRRRMM...','....MMMMMM....',
+        '....MM..MM....','...MMM..MMM...','...PPP..PPP...','...PPP..PPP...','...PP....PP...','..PP......PP..','..PP......PP..','..PP......PP..'
+      ];
+      const mistralSprite=[
+        '......PPPP......','.....PHHHPP.....','....PHHHHHPP....','...PPHHHHHHPP...','....PPHHHHPP....','......PPPP......',
+        '.....SSSS.......','....SSSSSS......','....SSESSS......','....SSSSSS......','.....SSSS.......','......PP........',
+        '....PPMMMPP.....','...PMMRRRMMP....','..PMMRRRRRRMP...','..PMRRARARRRMP..','..PMRRRRRRRRMP..','...PMRRRARRMP...',
+        '....PMMRRRMP....','.....PMMMPP.....','....PPM..MPP....','...PPMM..MMMP...','...PPPP..PPPP...','...PP......PP...',
+        '..PP..........PP','..PP..........PP','..PPP........PPP','...PP.......PP..','...PP.......PP..','..PP..........PP'
+      ];
+      let stageKey='metro',lastTime=0,shake=0;
+      const fighters=[],cars=[],kiBlasts=[],energyBeams=[];
+      const makeFighter=(x,color,dark,controls,sprite=guySprite,hair='#291631',accent=color)=>({x,y:170,vx:0,vy:0,color,dark,controls,sprite,hair,accent,facing:x<240?1:-1,damage:0,attack:0,attackType:'punch',stun:0,grounded:false,lastHit:0,dropTimer:0,carCooldown:0,carInputHeld:false,punchCharge:0,mowerTime:0,mowerHitCooldown:0,mowerInputHeld:false,chargeAttackActive:false,chargeAttackTime:0,chargeHitCooldown:0,p2ChargeHeld:false,transformed:false});
+      function reset(){fighters.length=0;cars.length=0;kiBlasts.length=0;energyBeams.length=0;fighters.push(makeFighter(190,'#f04452','#81244f',{left:'a',right:'d',jump:'w',down:'s',hit:'e'}),makeFighter(290,'#267f91','#173e5b',{left:'arrowleft',right:'arrowright',jump:'arrowup',down:'arrowdown',hit:' '},mistralSprite,'#35b8a5','#f1c96a'));}
+      reset();
+      document.querySelectorAll('.stage-button').forEach(button=>button.addEventListener('click',()=>{stageKey=button.dataset.stage;document.querySelectorAll('.stage-button').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));readout.textContent=stages[stageKey].name;characterSelect.hidden=false;}));
+      document.querySelector('#guy-card').addEventListener('click',event=>{event.currentTarget.setAttribute('aria-pressed','true');startMatch.disabled=false;});
+      startMatch.addEventListener('click',()=>{stageBar.hidden=true;characterSelect.hidden=true;gameFrame.hidden=false;gameControls.hidden=false;document.querySelector('#page-title').textContent='Local match';document.querySelector('.eyebrow').textContent=`Now playing / ${stages[stageKey].name}`;reset();});
+      document.querySelector('#reset').addEventListener('click',reset);
+      window.addEventListener('keydown',event=>{const key=event.key.toLowerCase();if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(key))event.preventDefault();keys.add(key);});
+      window.addEventListener('keyup',event=>keys.delete(event.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+      function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
+      function drawSprite(target,left,top,scale,color,dark,sprite=guySprite,hair='#291631',accent=color){const palette={P:'#291631',H:hair,A:accent,M:dark,R:color,S:'#ffa391',E:'#21132c'};target.imageSmoothingEnabled=false;sprite.forEach((row,y)=>{const offset=Math.floor((16-row.length)/2);for(let x=0;x<row.length;x++){const pixel=row[x];if(pixel!=='.'){target.fillStyle=palette[pixel];target.fillRect(left+(x+offset)*scale,top+y*scale,scale,scale);}}});}
+      drawSprite(document.querySelector('#character-portrait').getContext('2d'),0,0,2,'#f04452','#81244f');
+      function drawBackground(stage,cameraX){rect(0,0,480,270,stage.sky);rect(0,177,480,93,stage.far);for(let i=0;i<5;i++){const x=i*112-cameraX*.08%112;rect(x,150,80,28,stage.near);rect(x+16,137,48,13,stage.near);rect(x+32,128,20,9,stage.near);}rect(0,200,480,70,stage.ground);rect(0,200,480,4,stage.trim);for(let x=0;x<480;x+=24)rect(x+5,218,8,2,stage.near);}
+      function drawPlatform(x,y,width,stage){rect(x,y,width,8,stage.ground);rect(x,y,width,3,stage.trim);rect(x+5,y+5,Math.max(0,width-10),2,stage.near);}
+      function drawFighter(fighter,index){const{x,y,color,dark,facing}=fighter;if(fighter.stun>0&&Math.floor(fighter.stun*24)%2===0)return;rect(x-6,y+17,12,3,'rgba(20,30,28,.32)');if(fighter.transformed){rect(x-11,y-15,22,32,'rgba(255,222,92,.18)');rect(x-13,y-12,3,19,'#ffe36e');rect(x+10,y-12,3,19,'#ffe36e');}drawSprite(ctx,x-8,y-13,1,color,dark,fighter.sprite,fighter.transformed?'#ffe36e':fighter.hair,fighter.accent);if(fighter.punchCharge>0){rect(x+facing*9-2,y-2,4,4,'#fff0bd');if(fighter.punchCharge>0.8)rect(x+facing*12-2,y-5,4,4,'#f1b84a');}if(fighter.attack>0){if(fighter.attackType==='sweep'){rect(x+(facing>0?5:-29),y+12,24,3,'#fff0bd');rect(x+(facing>0?24:-31),y+10,5,5,color);}else if(fighter.attackType==='uppercut'){rect(x+(facing>0?6:-9),y-16,3,19,'#fff0bd');rect(x+(facing>0?4:-10),y-18,7,3,color);}else if(fighter.attackType==='charge'){rect(x+(facing>0?-10:7),y+4,12,2,'#fff0bd');rect(x+(facing>0?7:-20),y+1,15,3,color);rect(x+(facing>0?20:-25),y,5,5,'#fff0bd');}else if(fighter.attackType==='longkick'){rect(x+(facing>0?-30:7),y+11,24,4,dark);rect(x+(facing>0?-34:27),y+10,6,6,color);}else if(fighter.attackType==='chargedPunch'){rect(x+(facing>0?7:-21),y-1,14,7,'#fff0bd');rect(x+(facing>0?19:-23),y-3,6,8,color);}else{rect(x+(facing>0?7:-17),y+2,10,3,'#fff0bd');}}const badgeX=index===0?16:414;rect(badgeX,15,50,23,index===0?'#f04452':'#55c5dc');ctx.fillStyle='#172321';ctx.font='bold 9px monospace';ctx.textAlign='left';ctx.fillText(index===0?'P1':'P2',badgeX+5,25);ctx.font='bold 11px monospace';ctx.fillText(`${fighter.damage}%`,badgeX+5,34);}
+      function drawCar(car){const x=car.x,y=car.y;rect(x-13,y-8,26,8,'#e4563f');rect(x-8,y-12,14,5,'#f3d37b');rect(x-5,y-10,6,3,'#8bd0d5');rect(x-16,y-3,32,4,'#291631');rect(x-10,y+1,6,4,'#21132c');rect(x+6,y+1,6,4,'#21132c');}
+      function drawKiBlast(blast){rect(blast.x-5,blast.y-7,10,14,'#f1c96a');rect(blast.x-3,blast.y-5,6,10,'#fff0bd');rect(blast.x-1,blast.y-9,2,18,'#fff0bd');}
+      function drawEnergyBeam(beam){const end=beam.x+beam.direction*beam.length;rect(Math.min(beam.x,end),beam.y-7,beam.length,14,'#287ee8');rect(Math.min(beam.x,end),beam.y-3,beam.length,6,'#66d9ff');rect(Math.min(beam.x,end),beam.y-1,beam.length,2,'#e1fbff');rect(end-5,beam.y-10,10,20,'#9be9ff');}
+      function drawSpin(fighter){const x=fighter.x,y=fighter.y;rect(x-18,y-15,36,2,'#fff0bd');rect(x-18,y+14,36,2,'#fff0bd');rect(x-20,y-8,2,16,fighter.accent);rect(x+18,y-8,2,16,fighter.accent);}
+      function drawMower(fighter){const x=fighter.x+fighter.facing*19,y=fighter.y+10,dir=fighter.facing;rect(x-dir*8,y-7,16,8,'#63a34d');rect(x-dir*5,y-11,9,5,'#f1b84a');rect(x-dir*13,y,26,3,'#291631');rect(x-dir*8,y+3,5,4,'#21132c');rect(x+dir*6,y+3,5,4,'#21132c');rect(x+dir*12,y-2,3,7,'#c9c9b9');}
+      function step(dt){
+        const stage=stages[stageKey];
+        fighters.forEach((fighter,index)=>{
+          const control=fighter.controls;
+          const left=keys.has(control.left),right=keys.has(control.right),jump=keys.has(control.jump),down=keys.has(control.down),hit=keys.has(control.hit);
+          const back=index===1&&(fighter.facing>0?left:right);
+          const p2SpinInput=index===1&&back&&jump&&!hit;
+          const transformInput=index===1&&jump&&down;
+          if(transformInput)fighter.transformed=true;
+          if(p2SpinInput&&fighter.stun<=0){fighter.attackType='spin';fighter.attack=.14;}
+          const p2BeamInput=index===1&&right&&jump&&hit;
+          const p2ChargeInput=index===1&&right&&hit&&!jump;
+          const p2ChargeJustPressed=p2ChargeInput&&!fighter.p2ChargeHeld;
+          if(p2ChargeJustPressed&&fighter.stun<=0&&fighter.lastHit<=0){
+            fighter.chargeAttackActive=true;
+            fighter.chargeAttackTime=0;
+            fighter.chargeHitCooldown=0;
+            fighter.attackType='charge';
+            fighter.vy=-145;
+          }
+          fighter.p2ChargeHeld=p2ChargeInput;
+          if(fighter.chargeAttackActive){
+            fighter.chargeAttackTime+=dt;
+            if(!p2ChargeInput||fighter.chargeAttackTime>=1.5)fighter.chargeAttackActive=false;
+          }
+          const punchChargeInput=index===0&&left&&jump,mowerInput=index===0&&jump&&down;
+          if(punchChargeInput)fighter.punchCharge=Math.min(1.5,fighter.punchCharge+dt);
+          else if(fighter.punchCharge>0){fighter.attackType='chargedPunch';fighter.attack=.2;fighter.lastHit=.4;fighter.chargedPunchPower=fighter.punchCharge;fighter.punchCharge=0;}
+          if(mowerInput&&!fighter.mowerInputHeld){fighter.mowerTime=0;fighter.mowerHitCooldown=0;}
+          if(!mowerInput)fighter.mowerTime=0;
+          fighter.mowerInputHeld=mowerInput;
+          const mowing=mowerInput&&fighter.mowerTime<3;
+          if(mowing){fighter.mowerTime=Math.min(3,fighter.mowerTime+dt);fighter.mowerHitCooldown=Math.max(0,fighter.mowerHitCooldown-dt);}
+          fighter.carCooldown=Math.max(0,fighter.carCooldown-dt);
+          const carInput=index===0&&jump&&right;
+          if(carInput&&!fighter.carInputHeld&&fighter.carCooldown<=0){cars.push({x:fighter.x+16,y:187,direction:1,hit:false});fighter.carCooldown=1.2;}
+          fighter.carInputHeld=carInput;
+          if(fighter.stun>0)fighter.stun=Math.max(0,fighter.stun-dt);
+          if(fighter.attack>0)fighter.attack=Math.max(0,fighter.attack-dt);
+          fighter.chargeHitCooldown=Math.max(0,fighter.chargeHitCooldown-dt);
+          fighter.dropTimer=Math.max(0,fighter.dropTimer-dt);
+          if(fighter.stun<=0){
+            const p2DirectionalAttack=index===1&&(p2SpinInput||hit&&(left||right||jump||down));
+            if(fighter.chargeAttackActive)fighter.vx+=fighter.facing*900*dt;
+            else if(!p2DirectionalAttack)fighter.vx+=((right?1:0)-(left?1:0))*440*dt;
+            if(mowing)fighter.vx+=fighter.facing*520*dt;
+            if(jump&&!hit&&!transformInput&&!p2SpinInput&&!punchChargeInput&&!mowerInput&&fighter.grounded){fighter.vy=-215;fighter.grounded=false;}
+            if(down&&!jump&&!hit&&fighter.grounded){fighter.dropTimer=.2;fighter.vy=45;fighter.grounded=false;}
+            if(hit&&fighter.attack<=0&&fighter.lastHit<=0&&!fighter.chargeAttackActive&&!(index===1&&right&&!jump)){
+              const forward=(right&&fighter.facing>0)||(left&&fighter.facing<0);
+              const back=(left&&fighter.facing>0)||(right&&fighter.facing<0);
+              if(p2BeamInput){
+                energyBeams.push({x:fighter.x+fighter.facing*12,y:fighter.y-5,direction:fighter.facing,length:190,life:.2,hit:false});
+                fighter.attackType='energyBeam';
+                fighter.attack=.2;
+                fighter.lastHit=.45;
+              }else if(index===1&&jump){
+                kiBlasts.push({x:fighter.x,y:fighter.y-13,velocity:-235,life:1.2});
+                fighter.attackType='kiBlastUp';
+              }else if(index===1&&right){
+                fighter.attackType='charge';
+              }else if(index===1&&left)fighter.attackType='skyKick';
+              else if(index===1&&down)fighter.attackType='sweep';
+              else fighter.attackType=index!==0?'punch':down?'sweep':jump?'uppercut':forward?'charge':back?'longkick':'punch';
+              fighter.attack=.2;
+              fighter.lastHit=.4;
+              if(fighter.attackType==='charge')fighter.vx=fighter.facing*220;
+              if(fighter.attackType==='uppercut')fighter.vy=Math.min(fighter.vy,-265);
+            }
+          }
+          fighter.lastHit=Math.max(0,fighter.lastHit-dt);
+          fighter.vx*=Math.pow(fighter.grounded?.8:.97,dt*60);
+          const maxSpeed=fighter.chargeAttackActive?260:fighter.attackType==='charge'&&fighter.attack>0?205:118;
+          fighter.vx=Math.max(-maxSpeed,Math.min(maxSpeed,fighter.vx));
+          fighter.vy+=500*dt;
+          fighter.x+=fighter.vx*dt;
+          fighter.y+=fighter.vy*dt;
+          fighter.grounded=false;
+          if(fighter.y+17>=200){fighter.y=183;fighter.vy=0;fighter.grounded=true;}
+          if(fighter.dropTimer<=0)stage.platforms.forEach(([px,py,width])=>{
+            if(fighter.y+17>=py&&fighter.y+17-fighter.vy*dt<=py&&fighter.x+5>px&&fighter.x-4<px+width&&fighter.vy>=0){fighter.y=py-17;fighter.vy=0;fighter.grounded=true;}
+          });
+          if(fighter.x<22||fighter.x>458){fighter.vx*= -.45;fighter.x=Math.max(22,Math.min(458,fighter.x));}
+          const opponent=fighters[1-index];
+          fighter.facing=fighter.x<opponent.x?1:-1;
+          if(fighter.chargeAttackActive&&fighter.chargeHitCooldown<=0&&Math.abs(opponent.x-(fighter.x+fighter.facing*22))<26&&Math.abs(opponent.y-fighter.y)<27&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+Math.round(8*(fighter.transformed?1.5:1)));
+            opponent.vx=fighter.facing*185;
+            opponent.vy=-105;
+            opponent.stun=.22;
+            fighter.chargeHitCooldown=.28;
+            shake=.13;
+          }
+          if(mowing&&fighter.mowerHitCooldown<=0&&Math.abs(opponent.x-(fighter.x+fighter.facing*23))<24&&Math.abs(opponent.y-fighter.y)<25&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+5);
+            opponent.vx=fighter.facing*115;
+            opponent.vy=-65;
+            opponent.stun=.16;
+            fighter.mowerHitCooldown=.55;
+            shake=.1;
+          }
+          const attackDir=fighter.attackType==='longkick'?-fighter.facing:fighter.facing;
+          const attackDistance=(opponent.x-fighter.x)*attackDir;
+          const dy=opponent.y-fighter.y;
+          let range=22,verticalHit=Math.abs(dy)<23,damage=7,launchX=95+opponent.damage*.62,launchY=-105-opponent.damage*.22;
+          if(fighter.attackType==='sweep'){range=34;verticalHit=dy>-5&&dy<22;damage=6;launchX=72+opponent.damage*.35;launchY=-75;}
+          else if(fighter.attackType==='uppercut'){range=20;verticalHit=dy>-42&&dy<12;damage=8;launchX=65;launchY=-190-opponent.damage*.3;}
+          else if(fighter.attackType==='charge'){range=34;verticalHit=Math.abs(dy)<24;damage=9;launchX=150+opponent.damage*.5;launchY=-95;}
+          else if(fighter.attackType==='longkick'){range=46;verticalHit=Math.abs(dy)<24;damage=8;launchX=130+opponent.damage*.45;launchY=-90;}
+          else if(fighter.attackType==='chargedPunch'){range=32+fighter.chargedPunchPower*20;verticalHit=Math.abs(dy)<26;damage=7+Math.floor(fighter.chargedPunchPower*8);launchX=110+opponent.damage*.5+fighter.chargedPunchPower*45;launchY=-105-fighter.chargedPunchPower*55;}
+          else if(fighter.attackType==='skyKick'){range=44;verticalHit=Math.abs(dy)<25;damage=9;launchX=90;launchY=-285;}
+          const spinning=fighter.attackType==='spin';
+          if(spinning)verticalHit=Math.hypot(opponent.x-fighter.x,dy)<50;
+          if(!fighter.chargeAttackActive&&fighter.attackType!=='kiBlastUp'&&fighter.attackType!=='energyBeam'&&fighter.attack>.07&&fighter.attack<.16&&(spinning?Math.hypot(opponent.x-fighter.x,dy)<50:attackDistance>0&&attackDistance<range)&&verticalHit&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+Math.round(damage*(fighter.transformed?1.5:1)));
+            opponent.vx=attackDir*launchX;
+            opponent.vy=launchY;
+            opponent.stun=.22;
+            shake=.12;
+          }
+          if(fighter.y>270){fighter.x=index===0?190:290;fighter.y=130;fighter.vx=0;fighter.vy=0;fighter.damage=0;}
+        });
+        for(let i=cars.length-1;i>=0;i--){
+          const car=cars[i],opponent=fighters[1];
+          car.x+=car.direction*78*dt;
+          if(!car.hit&&Math.abs(opponent.x-car.x)<22&&Math.abs(opponent.y-183)<24&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+12);
+            opponent.vx=car.direction*185;
+            opponent.vy=-130;
+            opponent.stun=.28;
+            car.hit=true;
+            shake=.16;
+          }
+          if(car.x>500)cars.splice(i,1);
+        }
+        for(let i=kiBlasts.length-1;i>=0;i--){
+          const blast=kiBlasts[i],opponent=fighters[0];
+          blast.y+=blast.velocity*dt;
+          blast.life-=dt;
+          if(Math.abs(opponent.x-blast.x)<12&&Math.abs(opponent.y-blast.y)<16&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+Math.round(9*(fighters[1].transformed?1.5:1)));
+            opponent.vy=-155;
+            opponent.stun=.22;
+            shake=.12;
+            kiBlasts.splice(i,1);
+          }else if(blast.life<=0||blast.y<-10)kiBlasts.splice(i,1);
+        }
+        for(let i=energyBeams.length-1;i>=0;i--){
+          const beam=energyBeams[i],opponent=fighters[0],end=beam.x+beam.direction*beam.length;
+          beam.life-=dt;
+          if(!beam.hit&&opponent.x>=Math.min(beam.x,end)&&opponent.x<=Math.max(beam.x,end)&&Math.abs(opponent.y-5-beam.y)<14&&opponent.stun<=0){
+            opponent.damage=Math.min(999,opponent.damage+Math.round(11*(fighters[1].transformed?1.5:1)));
+            opponent.vx=beam.direction*130;
+            opponent.vy=-65;
+            opponent.stun=.22;
+            beam.hit=true;
+            shake=.14;
+          }
+          if(beam.life<=0)energyBeams.splice(i,1);
+        }
+        shake=Math.max(0,shake-dt);
+      }
+      function render(){const stage=stages[stageKey],distance=Math.abs(fighters[0].x-fighters[1].x),zoom=Math.max(.69,Math.min(1,1-Math.max(0,distance-70)/650)),cameraX=(fighters[0].x+fighters[1].x)/2;drawBackground(stage,cameraX);ctx.save();ctx.translate(240+(shake>0?(Math.random()-.5)*3:0),0);ctx.scale(zoom,zoom);ctx.translate(-cameraX,0);stage.platforms.forEach(([x,y,width])=>drawPlatform(x,y,width,stage));cars.forEach(drawCar);kiBlasts.forEach(drawKiBlast);energyBeams.forEach(drawEnergyBeam);fighters.forEach(fighter=>{if(fighter.mowerInputHeld&&fighter.mowerTime<3)drawMower(fighter);drawFighter(fighter);if(fighter.attackType==='spin'&&fighter.attack>0)drawSpin(fighter);});ctx.restore();rect(0,0,480,3,stage.trim);}
+      function frame(time){const dt=Math.min(.035,(time-lastTime)/1000||0);lastTime=time;step(dt);render();requestAnimationFrame(frame);}requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>
